@@ -1,0 +1,25 @@
+# makes tab complete case insensitive
+set completion-ignore-case on
+
+# makes up and down arrow search history for matching commands
+"\e[A":history-search-backward
+# "\e[B":history-search-forward
+
+# makes terminal set colors based on file properties TODO do i like this?
+#set colored-stats On # already in bashrc
+
+# when two things could be completed only shows last x digits TODO
+set completion-prefix-display-length 5
+
+# directories have a slash
+set mark-symlinked-directories on
+
+# shows all possible completions imeediately instead of hitting tab twice
+set show-all-if-unmodified on
+set show-all-if-ambiguous on
+
+# delete beeping
+set bell-style none
+
+# TODO see what this does exactly. (somthing about extensions)
+# set visible-stats on
