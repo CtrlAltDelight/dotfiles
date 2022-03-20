@@ -115,3 +115,16 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# IBus start
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+
+# CUSTOM COLORS ON BASH LINE
+# use \[...\] for parts that have 0 length
+# normal colorscheme: PS1="\[\e[0;35m\]\u@\\h \[\e[0;34m\]\w \[\e[0;33m\]\$ \[\e[m\]"
+
+# my purple colorscheme
+PS1="\[\e[0;95m\]λ \[\e[0;33m\]\W \[\e[0;95m\\]$\[\e[m\] "
+
