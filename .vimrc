@@ -43,10 +43,10 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFocus<CR>
 
 " ------------ OPTIONS ------------ "
+set nocompatible                                      " makes vimrc work
 colorscheme seoul256                                  " colorscheme
 filetype indent on                                    " makes indents different for specific types
 let mapleader = ";"                                   " map leader to semicolon
-set nocompatible                                      " makes vimrc work
 set backspace=2                                       " makes backspace work
 set number                                            " line numbers
 set tabstop=4 shiftwidth=4 encoding=utf-8 noexpandtab " tabs are good
@@ -80,6 +80,7 @@ set foldmethod=indent                                 " folds based on indent (f
 let g:netrw_mouse_maps=0                              " ignore mouse clicks when browsing directories
 set timeoutlen=2500                                   " makes the timeout a bit longer (2.5 seconds)
 set timeoutlen=1000 ttimeoutlen=0                     " disable escape keys (faster shift+o)
+set backup                                            " creates a backup file with each write
 
 " ------------ MAPPINGS ------------ "
 " Vim will no longer skip the 'fake' wrapped lines
@@ -134,6 +135,9 @@ nnoremap <s-tab> gT
 
 " autocomplete, backwards
 imap <F3> <C-P>
+
+" autocomplete, forwards
+imap <F4> <C-N>
 
 " ------------ COMMANDS ------------ "
 " writes boilerplate code for a new C file
