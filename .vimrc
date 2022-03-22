@@ -1,3 +1,8 @@
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+" .vimrc file
+"
+" vim: set tabstop=4 shiftwidth=4 fileencoding=utf8 expandtab:
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
 " ------------ PLUGINS ------------ "
 " Search for vim-plug
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -97,6 +102,12 @@ map <F2> :tabe
 " save current
 map <F3> :w<CR>
 
+" exit
+map <F4> :q<CR>
+
+" exit without saving
+map <S-F4> :q!<CR>
+
 " search command
 map <F7> :?
 
@@ -109,11 +120,20 @@ map <F11> :w<CR>:!python3 %<CR>
 " run current C program
 map <F12> :w<CR>:!gcc -o placeholder % -DDEBUG && ./placeholder && rm -f placeholder<CR>
 
+" ';' same as ':'
+nmap ; :
+
+" ' ' same as ':'
+nmap <SPACE> :
+
 " tab key advances tab
 nnoremap <tab> gt 
 
 " shift+tab goes back a tab
 nnoremap <s-tab> gT 
+
+" autocomplete, backwards
+imap <F3> <C-P>
 
 " ------------ COMMANDS ------------ "
 " writes boilerplate code for a new C file
