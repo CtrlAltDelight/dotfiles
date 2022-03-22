@@ -38,9 +38,11 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFocus<CR>
 
 " ------------ OPTIONS ------------ "
+colorscheme seoul256                                  " colorscheme
+filetype indent on                                    " makes indents different for specific types
+let mapleader = ";"                                   " map leader to semicolon
 set nocompatible                                      " makes vimrc work
 set backspace=2                                       " makes backspace work
-colorscheme seoul256                                  " colorscheme
 set number                                            " line numbers
 set tabstop=4 shiftwidth=4 encoding=utf-8 noexpandtab " tabs are good
 set smarttab                                          " aligns to space when tabbing
@@ -62,7 +64,6 @@ set splitbelow                                        " creates horizontal split
 set tabpagemax=30                                     " show up to 30 tabs
 set wrap                                              " wrap lines to fit window
 set lazyredraw                                        " redraws the screen less often
-filetype indent on                                    " makes indents different for specific types
 set showcmd                                           " shows command in bottom no matter what
 set cursorline                                        " puts a line where the cursor is
 set visualbell                                        " enables visual bell
@@ -83,9 +84,6 @@ noremap k gk
 " ga is used to see the ascii value at the cursor. set this functionality to
 " gs instead because ga is reserved for EasyAlign
 nnoremap gs ga
-
-" make semicolon the leader key
-let mapleader = ";" " map leader to semicolon
 
 " insert mode F5 will be underscore (saves overusing the pinky)
 inoremap <F5> _
