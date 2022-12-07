@@ -30,6 +30,11 @@ Plug 'junegunn/vim-easy-align'
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-fugitive'
+"Plug 'airblade/vim-gitgutter'
+"Plug 'ninegrid/vim-supertab'
+Plug 'morhetz/gruvbox'
+Plug 'sainnhe/sonokai'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 " ------------ PLUGIN SETTINGS ------------ "
@@ -44,7 +49,9 @@ nnoremap <leader>nf :NERDTreeFocus<CR>
 
 " ------------ OPTIONS ------------ "
 set nocompatible                                      " makes vimrc work
-colorscheme seoul256                                  " colorscheme
+set background=dark                                   " sets colorscheme to dark mode
+let g:gruvbox_contrast_dark = 'soft'                  " makes more contrast to background with gruvbox colorscheme
+colorscheme gruvbox                                   " colorscheme
 filetype indent on                                    " makes indents different for specific types
 let mapleader = ";"                                   " map leader to semicolon
 set backspace=2                                       " makes backspace work
@@ -80,7 +87,7 @@ set foldmethod=indent                                 " folds based on indent (f
 let g:netrw_mouse_maps=0                              " ignore mouse clicks when browsing directories
 set timeoutlen=2500                                   " makes the timeout a bit longer (2.5 seconds)
 set timeoutlen=1000 ttimeoutlen=0                     " disable escape keys (faster shift+o)
-set backup                                            " creates a backup file with each write
+set colorcolumn=100
 
 " ------------ MAPPINGS ------------ "
 " Vim will no longer skip the 'fake' wrapped lines
@@ -119,7 +126,7 @@ map <F8> :noh<CR>
 map <F11> :w<CR>:!python3 %<CR>
 
 " run current C program
-map <F12> :w<CR>:!gcc -o placeholder % -DDEBUG && ./placeholder && rm -f placeholder<CR>
+map <F12> :w<CR>:!gcc -o placeholder % && ./placeholder && rm -f placeholder<CR>
 
 " ';' same as ':'
 nmap ; :
