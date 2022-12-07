@@ -35,6 +35,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/sonokai'
 Plug 'vim-airline/vim-airline'
+Plug 'dense-analysis/ale'
+Plug 'vim-scripts/summerfruit256.vim'
 call plug#end()
 
 " ------------ PLUGIN SETTINGS ------------ "
@@ -46,6 +48,18 @@ nmap ga <Plug>(EasyAlign)
 
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFocus<CR>
+
+" Set this. Airline will handle the rest. Ale integration with airline
+let g:airline#extensions#ale#enabled = 1
+let g:ale_sign_column_always = 1 " Always have the ALE gutter open
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+" Set this in your vimrc file to disabling highlighting
+"let g:ale_set_highlights = 0
+
+" Going between errors
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " ------------ OPTIONS ------------ "
 set nocompatible                                      " makes vimrc work
