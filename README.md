@@ -1,15 +1,11 @@
-# dotfiles
-First unix rice! i3-gaps + Ubuntu 20.04
+# CtrlAltDelight's dotfiles
 
-Welcome!
-All my config files are listed here.
+These files may not work for you immediately. Some configurations are specific to myself.
 
-I also used the arc theme gtk and applied it using lxappearance.
+Right now I'm running arch linux with dwm. 
 
-Compton used for transparency.
+Neovim is now my primary editor (using init.lua as the rc), but I also have my .vimrc from when I used Vim.
 
-For installing polybar, I used the speedricer PPA.
-You can get the speedricer PPA here: https://launchpad.net/~kgilmer/+archive/ubuntu/speed-ricer
+I have this dotfiles directory in my home directory and I place symbolic links (look up ln -s) in my .config/ and home directories.
 
-.vimrc uses seoul256 for the colorscheme. https://github.com/junegunn/seoul256.vim
-Updated to automatically install seoul256 with vim-plug.
+Feel free to use these files!
