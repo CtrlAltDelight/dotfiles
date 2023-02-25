@@ -30,16 +30,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
@@ -55,22 +45,6 @@ if [ -n "$force_color_prompt" ]; then
 	color_prompt=
     fi
 fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -91,6 +65,13 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias vim='nvim'
+alias vi='nvim'
+alias pac='sudo pacman'       # shortcut for pacman
+alias paci='sudo pacman -S'   # for installing
+alias pacs='sudo pacman -Ss'  # for searching
+alias pacr='sudo pacman -R'   # for removing
+alias pacu='sudo pacman -Syu' # for updating
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -116,11 +97,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# IBus start
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-
 # CUSTOM COLORS ON BASH LINE
 # use \[...\] for parts that have 0 length
 # normal colorscheme: PS1="\[\e[0;35m\]\u@\\h \[\e[0;34m\]\w \[\e[0;33m\]\$ \[\e[m\]"
@@ -128,3 +104,5 @@ export QT_IM_MODULE=ibus
 # my purple colorscheme
 PS1="\[\e[0;95m\]λ \[\e[0;33m\]\W \[\e[0;95m\\]$\[\e[m\] "
 
+# starts X window manager if it has not been started yet
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
