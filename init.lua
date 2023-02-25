@@ -20,12 +20,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- Colorschemes
 	{ "ellisonleao/gruvbox.nvim", lazy=true }, -- lazy means it will load when the colorscheme is selected
-	{ "catppuccin/nvim", lazy=true },
+	{ "catppuccin/nvim", lazy=true},--, opts={ integrations={ gitsigns=true, nvimtree=true, telescope=true } }, config=true },
 	{ "folke/tokyonight.nvim", lazy=true },
 
 	-- Pleasing Plugins
 	{ "folke/drop.nvim", name="drop", opts={theme="snow"},config=true },
 	{ "goolord/alpha-nvim", dependencies={ "nvim-tree/nvim-web-devicons" }, name="alpha", config=function()require("alpha").setup(require'alpha.themes.dashboard'.config)end }, -- customizable neovim greeter
+	{ "nvim-lualine/lualine.nvim", dependencies='nvim-tree/nvim-web-devicons', config=true },
 
 	-- Useful plugins
 	{ "nvim-treesitter/nvim-treesitter", build=":TSUpdate"},
@@ -33,8 +34,6 @@ require("lazy").setup({
 	{ "nvim-lua/plenary.nvim" }, -- telescope dependency
 	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine
 	{ "nvim-treesitter/nvim-treesitter", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/AppData/Local/nvim-data/lazy/nvim-treesitter",highlight = { enable = true,disable = { "c", "rust" },additional_vim_regex_highlighting = false, }, }end },
-	--{ "hrsh7th/nvim-cmp", name="nvim-cmp", dependencies={"hrsh7th/vim-vsnip", "hrsh7th/cmp-nvim-lsp", "hrsh7th/nvim-lspconfig"} }, -- autocomplete, useful keys are <C-n> for next and <C-p> for previous
-	--{"nvim-lua/completion-nvim", dependencies={"steelsojka/completion-buffers", "neovim/nvim-lspconfig"}},
 	{ "windwp/nvim-autopairs", name="nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
 	{ "lewis6991/gitsigns.nvim", name="gitsigns", config=true }, -- git decoations for added, removed, and changed lines
 	{ "numToStr/Comment.nvim", name="Comment", config=true }, -- gcc toggle comment for current line
