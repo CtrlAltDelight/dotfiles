@@ -8,6 +8,7 @@ case $- in
       *) return;;
 esac
 
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -106,3 +107,6 @@ PS1="\[\e[0;95m\]λ \[\e[0;33m\]\W \[\e[0;95m\\]$\[\e[m\] "
 
 # starts X window manager if it has not been started yet
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+
+export PATH="$HOME/bin:$PATH"
+
