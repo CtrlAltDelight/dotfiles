@@ -34,7 +34,7 @@ require("lazy").setup({
 	{ "junegunn/vim-easy-align" },
 	{ "nvim-lua/plenary.nvim" }, -- telescope dependency
 	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine
-	{ "nvim-treesitter/nvim-treesitter", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/AppData/Local/nvim-data/lazy/nvim-treesitter",highlight = { enable = true,disable = { "c", "rust" },additional_vim_regex_highlighting = false, }, }end },
+	{ "nvim-treesitter/nvim-treesitter", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true,disable = { "c", "rust" },additional_vim_regex_highlighting = false, }, }end },
 	{ "windwp/nvim-autopairs", name="nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
 	{ "lewis6991/gitsigns.nvim", name="gitsigns", config=true }, -- git decoations for added, removed, and changed lines
 	{ "numToStr/Comment.nvim", name="Comment", config=true }, -- gcc toggle comment for current line
