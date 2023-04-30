@@ -2,6 +2,10 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.cmd('set termguicolors') -- for nvim-colorizer
+
+
+
 
 -- LAZY PACKAGE MANAGER --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -20,36 +24,39 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- Colorschemes
 	{ "ellisonleao/gruvbox.nvim", lazy=true }, -- lazy means it will load when the colorscheme is selected
-	{ "catppuccin/nvim", lazy=true},--, opts={ integrations={ gitsigns=true, nvimtree=true, telescope=true } }, config=true },
+	{ "catppuccin/nvim", lazy=true },--, opts={ integrations={ gitsigns=true, nvimtree=true, telescope=true } }, config=true },
 	{ "folke/tokyonight.nvim", lazy=true },
+	{ "shaunsingh/nord.nvim", lazy=true },
+	{ "marko-cerovac/material.nvim", lazy=true },
+	{ "shaunsingh/seoul256.nvim", lazy=true},
 
 	-- Pleasing Plugins
-	{ "folke/drop.nvim", name="drop", opts={theme="snow"},config=true },
-	{ "goolord/alpha-nvim", dependencies={ "nvim-tree/nvim-web-devicons" }, name="alpha", config=function()require("alpha").setup(require'alpha.themes.dashboard'.config)end }, -- customizable neovim greeter
-	{ "nvim-lualine/lualine.nvim", dependencies='nvim-tree/nvim-web-devicons', config=true },
+	{ "folke/drop.nvim", name="drop", opts={theme="snow"},config=true }, -- makes snow fall when idle in nvim
+	{ "goolord/alpha-nvim", name="alpha", dependencies={ "nvim-tree/nvim-web-devicons" }, opts, config=function()require("alpha").setup(require'alpha.themes.dashboard'.config)end }, -- customizable neovim greeter
+	{ "nvim-lualine/lualine.nvim", name="lualine", dependencies='nvim-tree/nvim-web-devicons', config=true }, -- nvim version of airline
 
 	-- Useful plugins
-	{ "iamcco/markdown-preview.nvim", build=function() vim.fn["mkdp#util#install"]() end, config=function() vim.g.mkdp_filetypes = { "markdown" }; vim.g.mkdp_browser='/usr/bin/firefox' end, ft="markdown" },
-	{ "nvim-treesitter/nvim-treesitter", build=":TSUpdate"},
-	{ "junegunn/vim-easy-align" },
-	{ "nvim-lua/plenary.nvim" }, -- telescope dependency
-	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine
-	{ "nvim-treesitter/nvim-treesitter", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true,disable = { "c", "rust" },additional_vim_regex_highlighting = false, }, }end },
+	{ "iamcco/markdown-preview.nvim", name="markdown-preview", build=function() vim.fn["mkdp#util#install"]() end, config=function() vim.g.mkdp_filetypes = { "markdown" }; vim.g.mkdp_browser='/usr/bin/firefox' end, ft="markdown" }, -- use <leader>mp to view the current markdown file
+	{ "junegunn/vim-easy-align", name="easy-align"}, -- use gaip to align the current block of code
+	{ "nvim-lua/plenary.nvim", name="plenary" }, -- telescope dependency, a library for neovim plugins
+	{ "nvim-telescope/telescope.nvim", name="telescope", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine, fuzzy finder and searcher
+	{ "nvim-treesitter/nvim-treesitter", name="treesitter", build=":TSUpdate", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true, additional_vim_regex_highlighting = false}, }end }, -- accurate syntax hilighting, indentation, and other editing features
 	{ "windwp/nvim-autopairs", name="nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
 	{ "lewis6991/gitsigns.nvim", name="gitsigns", config=true }, -- git decoations for added, removed, and changed lines
-	{ "numToStr/Comment.nvim", name="Comment", config=true }, -- gcc toggle comment for current line
-	{"norcalli/nvim-colorizer.lua" }, -- Highlights the background of color codes eg: #558817
+	{ "numToStr/Comment.nvim", name="Comment", config=true }, -- binds gcc toggle comment for current line
+	{ "norcalli/nvim-colorizer.lua", name="colorizer", opts = {'*'}, config = true }, -- Highlights the background of color codes eg: #558817
 	{ "lukas-reineke/indent-blankline.nvim", name="indent_blankline", opts={show_current_context = true, show_current_context_start = true}, config=true}, -- adds indentation guides
-	{ "nvim-tree/nvim-tree.lua", dependencies={"nvim-tree/nvim-web-devicons"}, name="nvim-tree", opts={ sort_by = "case_sensitive",view = {width = 30,mappings = {list = {{ key = "u", action = "dir_up" },},},},renderer = {group_empty = true,},filters = {dotfiles = true,},}, config=true }, -- file explorer
-	{ "neoclide/coc.nvim", branch="release" },
+	{ "nvim-tree/nvim-tree.lua", name="tree", dependencies={"nvim-tree/nvim-web-devicons"}, name="nvim-tree", opts={ sort_by = "case_sensitive", view = {width = 30,}, renderer = {group_empty = true,},filters = {dotfiles = true,},}, config=true }, -- file explorer
+	{ "neoclide/coc.nvim", name="coc", branch="release" }, -- autocomplete
 })
 
 -- VIM SETTINGS --
 vim.cmd('colorscheme catppuccin')            -- colorscheme
 vim.cmd('filetype indent on')                -- makes indents different for specific types
-vim.cmd('let mapleader = " "')               -- map leader to semicolon
+vim.cmd('let mapleader = " "')               -- map leader to space
 vim.cmd('set backspace=2')                   -- makes backspace work
 vim.cmd('set number')                        -- line numbers
+vim.cmd('set relativenumber')                        -- relative line numbers
 vim.cmd('set tabstop=4')
 vim.cmd('set shiftwidth=4')
 vim.cmd('set encoding=utf-8')
@@ -103,7 +110,7 @@ map("n", "<F4>", ":q<CR>")                                                      
 map("n", "<S-F4>", ":q!<CR>")                                                               -- close current file (without saving!)
 map("n", "<F8>", ":noh<CR>")                                                        -- stop highlight search
 map("n", "<F11>", "!make")                                                                  -- run first make rule/target
-map("n", "<F12>", ":w<CR>:!gcc -o placeholder % && ./placeholder && rm -f placeholder<CR>") -- run current C file (Does not work for multiple files)
+map("n", "<F12>", ":w<CR>:!gcc -o placeholder % -lm && ./placeholder && rm -f placeholder<CR>") -- run current C file (Does not work for multiple files)
 map('n', '<leader>0', ":tabe ~/.config/nvim/init.lua<CR>", {}) -- open init.lua
 
 -- Quality of Life
@@ -332,3 +339,64 @@ keyset("n", "<space>j", ":<C-u>CocNext<cr>", opts)
 keyset("n", "<space>k", ":<C-u>CocPrev<cr>", opts)
 -- Resume latest coc list
 keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opts)
+
+
+
+
+-- Treat svelte files as HTML
+-- (Since treesitter does not have a parser for svelte files)
+vim.cmd([[
+  augroup SvelteFileType
+    autocmd!
+    autocmd BufNewFile,BufRead *.svelte set filetype=html
+  augroup END
+]])
+
+-- Art for alpha-nvim homescreen:
+local dashboard = require "alpha.themes.dashboard"
+dashboard.section.header.val = {
+'                                        ,   ,                                   ',
+'                                        $,  $,     ,                            ',
+'                                        "ss.$ss. .s                             ',
+'                                ,     .ss$$$$$$$$$$s,                           ',
+'                                $. s$$$$$$$$$$$$$$`$$Ss                         ',
+'                                "$$$$$$$$$$$$$$$$$$o$$$       ,                 ',
+'                               s$$$$$$$$$$$$$$$$$$$$$$$$s,  ,s                  ',
+'                              s$$$$$$$$$"$$$$$$""""$$$$$$"$$$$$,                ',
+'                              s$$$$$$$$$$s""$$$$ssssss"$$$$$$$$"                ',
+'                             s$$$$$$$$$$\'         `"""ss"$"$s""                ',
+'                             s$$$$$$$$$$,              `"""""$  .s$$s           ',
+'                             s$$$$$$$$$$$$s,...               `s$$\'  `         ',
+'                         `ssss$$$$$$$$$$$$$$$$$$$$####s.     .$$"$.   , s-      ',
+'                           `""""$$$$$$$$$$$$$$$$$$$$#####$$$$$$"     $.$\'      ',
+'                                 "$$$$$$$$$$$$$$$$$$$$$####s""     .$$$|        ',
+'                                  "$$$$$$$$$$$$$$$$$$$$$$$$##s    .$$" $        ',
+'                                   $$""$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"   `       ',
+'                                  $$"  "$"$$$$$$$$$$$$$$$$$$$$S"""\'            ',
+'                             ,   ,"     \'  $$$$$$$$$$$$$$$$####s               ',
+'                             $.          .s$$$$$$$$$$$$$$$$$####"               ',
+'                 ,           "$s.   ..ssS$$$$$$$$$$$$$$$$$$$####"               ',
+'                 $           .$$$S$$$$$$$$$$$$$$$$$$$$$$$$#####"                ',
+'                 Ss     ..sS$$$$$$$$$$$$$$$$$$$$$$$$$$$######""                 ',
+'                  "$$sS$$$$$$$$$$$$$$$$$$$$$$$$$$$########"                     ',
+'           ,      s$$$$$$$$$$$$$$$$$$$$$$$$#########""\'                        ',
+'           $$..$$$$$$$$$$$$$$$$$$######"\'       ....,$$....    ,$              ',
+'            "$$$$$$$$$$$$$$$######"\' ,     .sS$$$$$$$$$$$$$$$$s$$              ',
+'              $$$$$$$$$$$$#####"     $, .s$$$$$$$$$$$$$$$$$$$$$$$$s.            ',
+'   )          $$$$$$$$$$$#####\'      `$$$$$$$$$###########$$$$$$$$$$$.         ',
+'  ((          $$$$$$$$$$$#####       $$$$$$$$###"       "####$$$$$$$$$$         ',
+'  ) \\         $$$$$$$$$$$$####.     $$$$$$###"             "###$$$$$$$$$   s\' ',
+' (   )        $$$$$$$$$$$$$####.   $$$$$###"                ####$$$$$$$$s$$\'   ',
+' )  ( (       $$"$$$$$$$$$$$#####.$$$$$###\'                .###$$$$$$$$$$"     ',
+' (  )  )   _,$"   $$$$$$$$$$$$######.$$##\'                .###$$$$$$$$$$       ',
+' ) (  ( \\.         "$$$$$$$$$$$$$#######,,,.          ..####$$$$$$$$$$$"       ',
+'(   )$ )  )        ,$$$$$$$$$$$$$$$$$$####################$$$$$$$$$$$"          ',
+'(   ($$  ( \\     _sS"  `"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$S$$,         ',
+' )  )$$$s ) )  .      .   `$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"\'  `$$        ',
+'  (   $$$Ss/  .$,    .$,,s$$$$$$##S$$$$$$$$$$$$$$$$$$$$$$$$S""        \'        ',
+'    \\)_$$$$$$$$$$$$$$$$$$$$$$$##"  $$        `$$.        `$$.                  ',
+'        `"S$$$$$$$$$$$$$$$$$#"      $          `$          `$                   ',
+'            \\`"""""""""""""\'         \'           \'           \'             ',
+
+}
+
