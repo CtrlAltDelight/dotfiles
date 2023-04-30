@@ -15,6 +15,6 @@ rofi.lines: 3
 rofi.eh: 2
 rofi.width: 100
 rofi.padding: 800
-rofi.font: Ubuntu Light 12
+rofi.font: Fira Code 12
 rofi.bw: 0
 
