@@ -31,24 +31,29 @@ require("lazy").setup({
 	{ "shaunsingh/seoul256.nvim", lazy=true},
 
 	-- Pleasing Plugins
-	{ "folke/drop.nvim", name="drop", opts={theme="snow"},config=true }, -- makes snow fall when idle in nvim
-	{ "goolord/alpha-nvim", name="alpha", dependencies={ "nvim-tree/nvim-web-devicons" }, opts, config=function()require("alpha").setup(require'alpha.themes.dashboard'.config)end }, -- customizable neovim greeter
-	{ "nvim-lualine/lualine.nvim", name="lualine", dependencies='nvim-tree/nvim-web-devicons', config=true }, -- nvim version of airline
+	{ "folke/drop.nvim", opts={theme="snow"},config=true }, -- makes snow fall when idle in nvim
+	{ "goolord/alpha-nvim", dependencies={ "nvim-tree/nvim-web-devicons" }, opts, config=function()require("alpha").setup(require'alpha.themes.dashboard'.config)end }, -- customizable neovim greeter
+	{ "nvim-lualine/lualine.nvim", dependencies='nvim-tree/nvim-web-devicons', config=true }, -- nvim version of airline
 
 	-- Useful plugins
-	{ "iamcco/markdown-preview.nvim", name="markdown-preview", build=function() vim.fn["mkdp#util#install"]() end, config=function() vim.g.mkdp_filetypes = { "markdown" }; vim.g.mkdp_browser='/usr/bin/firefox' end, ft="markdown" }, -- use <leader>mp to view the current markdown file
-	{ "junegunn/vim-easy-align", name="easy-align"}, -- use gaip to align the current block of code
-	{ "nvim-lua/plenary.nvim", name="plenary" }, -- telescope dependency, a library for neovim plugins
-	{ "nvim-telescope/telescope.nvim", name="telescope", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine, fuzzy finder and searcher
-	{ "nvim-treesitter/nvim-treesitter", name="treesitter", build=":TSUpdate", name="nvim-treesitter", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true, additional_vim_regex_highlighting = false}, }end }, -- accurate syntax hilighting, indentation, and other editing features
-	{ "windwp/nvim-autopairs", name="nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
-	{ "lewis6991/gitsigns.nvim", name="gitsigns", config=true }, -- git decoations for added, removed, and changed lines
-	{ "numToStr/Comment.nvim", name="Comment", config=true }, -- binds gcc toggle comment for current line
-	{ "norcalli/nvim-colorizer.lua", name="colorizer", opts = {'*'}, config = true }, -- Highlights the background of color codes eg: #558817
-	{ "lukas-reineke/indent-blankline.nvim", name="indent_blankline", opts={show_current_context = true, show_current_context_start = true}, config=true}, -- adds indentation guides
-	{ "nvim-tree/nvim-tree.lua", name="tree", dependencies={"nvim-tree/nvim-web-devicons"}, name="nvim-tree", opts={ sort_by = "case_sensitive", view = {width = 30,}, renderer = {group_empty = true,},filters = {dotfiles = true,},}, config=true }, -- file explorer
-	{ "neoclide/coc.nvim", name="coc", branch="release" }, -- autocomplete
+	{ "iamcco/markdown-preview.nvim", build=function() vim.fn["mkdp#util#install"]() end, config=function() vim.g.mkdp_filetypes = { "markdown" }; vim.g.mkdp_browser='/usr/bin/firefox' end, ft="markdown" }, -- use <leader>mp to view the current markdown file
+	{ "junegunn/vim-easy-align" }, -- use gaip to align the current block of code
+	{ "nvim-lua/plenary.nvim" }, -- telescope dependency, a library for neovim plugins
+	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine, fuzzy finder and searcher
+	{ "nvim-treesitter/nvim-treesitter", build=":TSUpdate", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true, additional_vim_regex_highlighting = false}, }end }, -- accurate syntax hilighting, indentation, and other editing features
+	{ "windwp/nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
+	{ "lewis6991/gitsigns.nvim", config=true }, -- git decoations for added, removed, and changed lines
+	{ "numToStr/Comment.nvim", config=true }, -- binds gcc toggle comment for current line
+	{ "norcalli/nvim-colorizer.lua", opts = {'*'}, config = true }, -- Highlights the background of color codes eg: #558817
+	{ "lukas-reineke/indent-blankline.nvim", opts={show_current_context = true, show_current_context_start = true}, config=true}, -- adds indentation guides
+	{ "nvim-tree/nvim-tree.lua", view = {width = 30,}, renderer = {group_empty = true,},filters = {dotfiles = true,}, config=true }, -- file explorer
+	{ "neoclide/coc.nvim", branch="release" }, -- autocomplete
+	{ "honza/vim-snippets" }, -- snippets
+	{ "neoclide/coc-snippets" }, -- snippetscomplete
+	{ "lervag/vimtex",  ft="tex" }, -- LaTex
+	{ "kaarmu/typst.vim", ft='typst', lazy=false }, --typst
 })
+
 
 -- VIM SETTINGS --
 vim.cmd('colorscheme catppuccin')            -- colorscheme
@@ -90,6 +95,7 @@ vim.cmd('let g:netrw_mouse_maps=0')          -- ignore mouse clicks when browsin
 vim.cmd('set timeoutlen=2500')               -- makes the timeout a bit longer (2.5 seconds)
 vim.cmd('set timeoutlen=1000 ttimeoutlen=0') -- disable escape keys (faster shift+o)
 vim.cmd('set colorcolumn=100')               -- places a column at X characters into the file
+vim.cmd('set confirm')                       -- Asks if you want to save before closing file
 
 
 
@@ -146,8 +152,16 @@ map('n', '<leader>mt', ":MarkdownPreviewToggle<CR>", {}) -- markdown toggle
 vim.opt.termguicolors = true
 
 -- user-defined commands --
-vim.api.nvim_create_user_command('Newc', ":normal i#include <stdio.h><CR>#include <stdlib.h><CR>#include <stdbool.h><CR>#include <string.h><CR>#include <assert.h><CR><CR>int main(int argc, char* argv[]) {<CR><CR>return EXIT_SUCCESS;<CR>}<CR>/* vim: set tabstop=4 shiftwidth=4 fileencoding=utf-8 noexpandtab: */<C-Up><C-Up><C-Up><tab>", {}) -- inserts boilerplate for a new C program
+vim.api.nvim_create_user_command('Newc', ":normal i#include <stdio.h><CR>#include <stdlib.h><CR>#include <stdbool.h><CR>#include <string.h><CR>#include <assert.h><CR><CR>int main(int argc, char* argv[]) {<CR><CR><TAB>return EXIT_SUCCESS;<CR>}<CR>/* vim: set tabstop=4 shiftwidth=4 fileencoding=utf-8 noexpandtab: */<C-Up><C-Up><C-Up><tab>", {}) -- inserts boilerplate for a new C program
 
+
+-- vimtex settings --
+vim.cmd('let g:tex_flavor=\'latex\'')
+vim.cmd('let g:vimtex_view_method=\'zathura\'')
+vim.cmd('let g:vimtex_quickfix_mode=0')
+vim.cmd('set conceallevel=1')          -- latex code is replaced or made invisible when...
+vim.cmd('let g:tex_conceal=\'abdmg\'') -- cursor is not on line
+map("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>", {})
 
 
 
@@ -339,7 +353,6 @@ keyset("n", "<space>j", ":<C-u>CocNext<cr>", opts)
 keyset("n", "<space>k", ":<C-u>CocPrev<cr>", opts)
 -- Resume latest coc list
 keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opts)
-
 
 
 
