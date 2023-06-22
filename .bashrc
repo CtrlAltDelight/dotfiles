@@ -73,6 +73,7 @@ alias paci='sudo pacman -S'   # for installing
 alias pacs='sudo pacman -Ss'  # for searching
 alias pacr='sudo pacman -R'   # for removing
 alias pacu='sudo pacman -Syu' # for updating
+alias rm='~/scripts/rm_with_backup.sh' # saves a backup of the removed files to the ~/backups directory
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -103,7 +104,7 @@ fi
 # normal colorscheme: PS1="\[\e[0;35m\]\u@\\h \[\e[0;34m\]\w \[\e[0;33m\]\$ \[\e[m\]"
 
 # my purple colorscheme
-PS1="\[\e[0;95m\]λ \[\e[0;33m\]\W \[\e[0;95m\\]$\[\e[m\] "
+PS1="\[\e[0;95m\]λ \[\e[0;33m\]\w \[\e[0;95m\\]$\[\e[m\] "
 
 # starts X window manager if it has not been started yet
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
