@@ -104,7 +104,9 @@ fi
 # normal colorscheme: PS1="\[\e[0;35m\]\u@\\h \[\e[0;34m\]\w \[\e[0;33m\]\$ \[\e[m\]"
 
 # my purple colorscheme
-PS1="\[\e[0;95m\]λ \[\e[0;33m\]\w \[\e[0;95m\\]$\[\e[m\] "
+source /usr/share/git/completion/git-prompt.sh
+#PS1="\[\e[0;95m\]λ \[\e[0;33m\]\w \[\033[0;32m\]\$(__git_ps1 '(%s)')\n\[\e[0;95m\\]$\[\e[m\] "
+export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w \[\033[0;36m\]\$(__git_ps1 '(%s)')\[\e[0m\]\n\$ "
 
 # starts X window manager if it has not been started yet
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
