@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# NOTE Needs all wallpapers in the path ~/Pictures/wallpapers
+# Gives a random wallpaper from path
+wallpaper=$(find ~/Pictures/wallpapers -type f -name "*.jpg" -o -name "*.png" | shuf -n 1)
+
+# Set the wallpaper with feh
+feh --bg-scale $wallpaper
+
+# Generate colorscheme with wal
+wal -c # Clears cache
+wal -i $wallpaper # generate color scheme
+cp ~/.cache/wal/colors.Xresources ~/.Xresources
