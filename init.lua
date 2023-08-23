@@ -52,6 +52,9 @@ require("lazy").setup({
 	{ "neoclide/coc-snippets" }, -- snippetscomplete
 	{ "lervag/vimtex",  ft="tex" }, -- LaTex
 	{ "kaarmu/typst.vim", ft='typst', lazy=false }, --typst
+
+	-- github copilot
+	{ "github/copilot.vim", lazy=false }
 })
 
 
