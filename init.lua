@@ -52,6 +52,8 @@ require("lazy").setup({
 	{ "neoclide/coc-snippets" }, -- snippetscomplete
 	{ "lervag/vimtex",  ft="tex" }, -- LaTex
 	{ "kaarmu/typst.vim", ft='typst', lazy=false }, --typst
+	--{ "williamboman/mason.nvim", ft='typst', lazy=false, config=true }, --typst
+	--{ "williamboman/mason-lspconfig.nvim", ft='typst', lazy=false, config=true }, --typst
 })
 
 
@@ -118,9 +120,13 @@ map("n", "<F8>", ":noh<CR>")                                                    
 map("n", "<F11>", "!make")                                                                  -- run first make rule/target
 map("n", "<F12>", ":w<CR>:!gcc -o placeholder % -lm && ./placeholder && rm -f placeholder<CR>") -- run current C file (Does not work for multiple files)
 map('n', '<leader>0', ":tabe ~/.config/nvim/init.lua<CR>", {}) -- open init.lua
+map('n', '<leader>9', ":!make test<CR>", {}) -- run `make test`
 
 -- Quality of Life
 map("n", ";", ":")        -- saves on pressing shift for :
+
+-- terminal key mapping
+vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n><C-w>k', { noremap = true, silent = true })
 
 -- Easy Align
 map("n", "ga", "<Plug>(EasyAlign)") -- activate easy align. Tip: use gaip to select the inner paragraph for easy align
@@ -159,7 +165,7 @@ vim.api.nvim_create_user_command('Newc', ":normal i#include <stdio.h><CR>#includ
 vim.cmd('let g:tex_flavor=\'latex\'')
 vim.cmd('let g:vimtex_view_method=\'zathura\'')
 vim.cmd('let g:vimtex_quickfix_mode=0')
-vim.cmd('set conceallevel=1')          -- latex code is replaced or made invisible when...
+--vim.cmd('set conceallevel=1')          -- latex code is replaced or made invisible when...
 vim.cmd('let g:tex_conceal=\'abdmg\'') -- cursor is not on line
 map("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>", {})
 
