@@ -4,9 +4,6 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.cmd('set termguicolors') -- for nvim-colorizer
 
-
-
-
 -- LAZY PACKAGE MANAGER --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -39,7 +36,7 @@ require("lazy").setup({
 	{ "iamcco/markdown-preview.nvim", build=function() vim.fn["mkdp#util#install"]() end, config=function() vim.g.mkdp_filetypes = { "markdown" }; vim.g.mkdp_browser='/usr/bin/firefox' end, ft="markdown" }, -- use <leader>mp to view the current markdown file
 	{ "junegunn/vim-easy-align" }, -- use gaip to align the current block of code
 	{ "nvim-lua/plenary.nvim" }, -- telescope dependency, a library for neovim plugins
-	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" } }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine, fuzzy finder and searcher
+	{ "nvim-telescope/telescope.nvim", dependencies={ "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim", "debugloop/telescope-undo.nvim"} }, -- need to install sharkdp/fd and BurntSushi/ripgrep on your machine, fuzzy finder and searcher
 	{ "nvim-treesitter/nvim-treesitter", build=":TSUpdate", config=function() require'nvim-treesitter.configs'.setup { parser_install_dir = "~/.config/nvim/nvim-data/lazy/nvim-treesitter",highlight = { enable = true, additional_vim_regex_highlighting = false}, }end }, -- accurate syntax hilighting, indentation, and other editing features
 	{ "windwp/nvim-autopairs", config=true }, -- automatically pairs quotes, parenthesis, brackets etc.
 	{ "lewis6991/gitsigns.nvim", config=true }, -- git decoations for added, removed, and changed lines
@@ -52,9 +49,12 @@ require("lazy").setup({
 	{ "neoclide/coc-snippets" }, -- snippetscomplete
 	{ "lervag/vimtex",  ft="tex" }, -- LaTex
 	{ "kaarmu/typst.vim", ft='typst', lazy=false }, --typst
-
-	-- github copilot
-	{ "github/copilot.vim", lazy=false }
+	{ "github/copilot.vim", lazy=false },
+	{ "folke/which-key.nvim", event = "VeryLazy", init = function() vim.o.timeout=true vim.o.timeoutlen=100 end, opts = {}},
+	{ "folke/zen-mode.nvim", opts = {}},
+	{ "akinsho/toggleterm.nvim", verison = "*", config=true},
+	--{ "williamboman/mason.nvim", ft='typst', lazy=false, config=true }, --typst
+	--{ "williamboman/mason-lspconfig.nvim", ft='typst', lazy=false, config=true }, --typst
 })
 
 
@@ -95,11 +95,12 @@ vim.cmd('set foldenable')                    -- allows folding of codeblocks
 vim.cmd('set foldlevelstart=10')             -- opens folds by default
 vim.cmd('set foldmethod=indent')             -- folds based on indent (for python)
 vim.cmd('let g:netrw_mouse_maps=0')          -- ignore mouse clicks when browsing directories
-vim.cmd('set timeoutlen=2500')               -- makes the timeout a bit longer (2.5 seconds)
-vim.cmd('set timeoutlen=1000 ttimeoutlen=0') -- disable escape keys (faster shift+o)
+--vim.cmd('set timeoutlen=2500')               -- makes the timeout a bit longer (2.5 seconds)
+--vim.cmd('set timeoutlen=1000 ttimeoutlen=0') -- disable escape keys (faster shift+o)
 vim.cmd('set colorcolumn=100')               -- places a column at X characters into the file
 vim.cmd('set confirm')                       -- Asks if you want to save before closing file
-
+vim.api.nvim_set_keymap('i', '<C-a>', 'copilot#Accept("<CR>")', {expr=true, silent=true, script=true})
+vim.cmd('let g:copilot_no_tab_map= v:true')          -- ignore mouse clicks when browsing directories
 
 
 -- MAPPINGS --
@@ -121,9 +122,28 @@ map("n", "<F8>", ":noh<CR>")                                                    
 map("n", "<F11>", "!make")                                                                  -- run first make rule/target
 map("n", "<F12>", ":w<CR>:!gcc -o placeholder % -lm && ./placeholder && rm -f placeholder<CR>") -- run current C file (Does not work for multiple files)
 map('n', '<leader>0', ":tabe ~/.config/nvim/init.lua<CR>", {}) -- open init.lua
+map('n', '<leader>9', ":!make test<CR>", {}) -- run `make test`
 
 -- Quality of Life
 map("n", ";", ":")        -- saves on pressing shift for :
+map("n", "<C-k>", "<C-w>k") -- move up a window
+map("n", "<C-j>", "<C-w>j") -- move down a window
+map("n", "<C-h>", "<C-w>h") -- move left a window
+map("n", "<C-l>", "<C-w>l") -- move right a window
+map("n", "<C-Up>", ":resize +2<CR>") -- resize window up
+map("n", "<C-Down>", ":resize -2<CR>") -- resize window down
+map("n", "<C-Left>", ":vertical resize +2<CR>") -- resize window left
+map("n", "<C-Right>", ":vertical resize -2<CR>") -- resize window right
+map("n", "<leader>h", ":split<CR>") -- split window horizontally
+map("n", "<leader>v", ":vsplit<CR>") -- split window vertically
+map("n", "<leader>q", ":q<CR>") -- close current window
+map("n", "<leader>Q", ":q!<CR>") -- close current window (without saving!)
+map("n", "<leader>t", ":ToggleTerm size=10 direction=horizontal<CR>") -- open terminal
+map("n", "<leader>w", ":w<CR>") -- save current file
+map("n", "<leader>W", ":wa<CR>") -- save all files
+
+-- terminal key mapping
+vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n><C-w>k', { noremap = true, silent = true })
 
 -- Easy Align
 map("n", "ga", "<Plug>(EasyAlign)") -- activate easy align. Tip: use gaip to select the inner paragraph for easy align
@@ -135,6 +155,9 @@ map('n', '<leader>fg', builtin.live_grep, {}) -- find grep
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {}) -- find buffer
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {}) -- find help tags
 
+-- Telescope undo
+map('n', '<leader>u', ":Telescope undo<CR>", {})
+
 -- Lazy
 map('n', '<leader>l', ":Lazy<CR>", {})
 
@@ -142,14 +165,15 @@ map('n', '<leader>l', ":Lazy<CR>", {})
 map('n', '<leader>cc', "gcc", {})
 
 -- Tree
-map('n', '<leader>tt', ":NvimTreeToggle<CR>", {})
-map('n', '<leader>tf', ":NvimTreeFocus<CR>", {})
-map('n', '<leader>tc', ":NvimTreeCollapse<CR>", {})
+map('n', '<leader>e',  ":NvimTreeToggle<CR>", {})
 
 -- Markdown Preview
 map('n', '<leader>mp', ":MarkdownPreview<CR>", {}) -- markdown preview
 map('n', '<leader>ms', ":MarkdownPreviewStop<CR>", {}) -- markdown stop
 map('n', '<leader>mt', ":MarkdownPreviewToggle<CR>", {}) -- markdown toggle
+
+-- ZenMode
+map('n', '<leader>z', ":ZenMode<CR>", {}) -- markdown toggle
 
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
@@ -162,9 +186,8 @@ vim.api.nvim_create_user_command('Newc', ":normal i#include <stdio.h><CR>#includ
 vim.cmd('let g:tex_flavor=\'latex\'')
 vim.cmd('let g:vimtex_view_method=\'zathura\'')
 vim.cmd('let g:vimtex_quickfix_mode=0')
-vim.cmd('set conceallevel=1')          -- latex code is replaced or made invisible when...
+--vim.cmd('set conceallevel=1')          -- latex code is replaced or made invisible when...
 vim.cmd('let g:tex_conceal=\'abdmg\'') -- cursor is not on line
-map("n", "<leader>q", ":!zathura <C-r>=expand('%:r')<cr>.pdf &<cr>", {})
 
 
 
@@ -280,7 +303,7 @@ keyset("n", "<leader>as", "<Plug>(coc-codeaction-source)", opts)
 -- Remap keys for applying codeActions to the current buffer
 keyset("n", "<leader>ac", "<Plug>(coc-codeaction)", opts)
 -- Apply the most preferred quickfix action on the current line.
-keyset("n", "<leader>qf", "<Plug>(coc-fix-current)", opts)
+--keyset("n", "<leader>qf", "<Plug>(coc-fix-current)", opts)
 
 -- Remap keys for apply refactor code actions.
 keyset("n", "<leader>re", "<Plug>(coc-codeaction-refactor)", { silent = true })
@@ -341,21 +364,21 @@ vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}"
 ---@diagnostic disable-next-line: redefined-local
 local opts = {silent = true, nowait = true}
 -- Show all diagnostics
-keyset("n", "<space>a", ":<C-u>CocList diagnostics<cr>", opts)
+keyset("n", "<space>ca", ":<C-u>CocList diagnostics<cr>", opts)
 -- Manage extensions
-keyset("n", "<space>e", ":<C-u>CocList extensions<cr>", opts)
+keyset("n", "<space>ce", ":<C-u>CocList extensions<cr>", opts)
 -- Show commands
-keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
+keyset("n", "<space>cc", ":<C-u>CocList commands<cr>", opts)
 -- Find symbol of current document
-keyset("n", "<space>o", ":<C-u>CocList outline<cr>", opts)
+keyset("n", "<space>co", ":<C-u>CocList outline<cr>", opts)
 -- Search workspace symbols
-keyset("n", "<space>s", ":<C-u>CocList -I symbols<cr>", opts)
+keyset("n", "<space>cs", ":<C-u>CocList -I symbols<cr>", opts)
 -- Do default action for next item
-keyset("n", "<space>j", ":<C-u>CocNext<cr>", opts)
+keyset("n", "<space>cj", ":<C-u>CocNext<cr>", opts)
 -- Do default action for previous item
-keyset("n", "<space>k", ":<C-u>CocPrev<cr>", opts)
+keyset("n", "<space>ck", ":<C-u>CocPrev<cr>", opts)
 -- Resume latest coc list
-keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opts)
+keyset("n", "<space>cp", ":<C-u>CocListResume<cr>", opts)
 
 
 
